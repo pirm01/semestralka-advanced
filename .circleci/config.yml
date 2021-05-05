@@ -1,5 +1,5 @@
 vse: 
-  docker:
+  docker: &vse
     - image: circleci/node:8.11.3
 ansible:
   docker: &ansible
@@ -9,7 +9,7 @@ ansible:
 version: 2.1
 jobs:
   build:
-    <<: *vse
+    docker: *vse
     steps:
       - checkout
       - run: npm install

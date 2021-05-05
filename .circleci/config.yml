@@ -7,6 +7,8 @@ ansible:
       environment:
           ANSIBLE_HOST_KEY_CHECKING: no
 version: 2.1
+orbs:
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 jobs:
   build:
     docker: *vse

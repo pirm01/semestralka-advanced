@@ -12,7 +12,7 @@
        vpc_subnet_id: subnet-aca3d48d
        assign_public_ip: yes
        wait: yes
-       count: 2
+       count: 1
        aws_access_key: "ASIAYKFY54BAQV4OX7X3"
        aws_secret_key: "fJLsoegXisCPFAYrRXcXQjnx2izuKpeFEmFJbdBe"
        security_token: "IQoJb3JpZ2luX2VjEJH//////////wEaCXVzLXdlc3QtMiJIMEYCIQDacmooQv/LZwDvduApFGTm3Mxj63LASXd5klEnln8IVQIhAOg8x9b2Y3Bpq7WNNHnTQAILq4ThDAJwGSOg7Q1TB7oIKq0CCBoQABoMNTcxNjE4NDg0Mjg5Igz5CmhXPy/tiTevm00qigJlYEPhNHzco/vA6P5Eh7W50OTyP2kVN5CTM+LaJoj8HWdAnvZE6+Blws9mX4h14rCPNm0is3FejreHZ0iVR9HDkl+GsDZIzTYoBKx7GavNjs2lAjpHeS1KFPI7mkgzo3e/o2UuRKTR59kIrG3gdKpBaWf2WkQ1oPHV/uqN89Sgrp7WK80HF8asG4bdgO55Lr2GVOKVJaBGLlKVUPuB64OOKfct3hxD/GRwyFT6xYJ9/fPidV/pmDm9NPWxJn4TQxZHR3+Eo56jY0sm3H1lLfcLTPNpQkmN6Ue2JQKKupVGj4qYoLBA8oseMib8kgSp/ERKZFamUhIrMUVRWp7lpEgzXP1gGT+nuytBhTDzpcuEBjqcAcK6EC4Ji6csGIALl7vR+sQ15uCmEei0F3f4sNrrWqDw18WNq5GzNz7te+J0fSWgQrWgaPumyQOmY6i8Zwp/FuR7HZyVYS2pF5gj2/pnmk9je4ZH0yysdWtv1CStARfzXR6Or/rnxx7fDgFVbJXL5Drz0HgRymJicm95HuHQPluUD8GJFtli38gL0IgxeG2TzTLxzsyGzzV2SHJUwg=="

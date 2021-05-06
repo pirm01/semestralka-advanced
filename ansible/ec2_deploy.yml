@@ -1,0 +1,59 @@
+- name: Deploy to EC2
+  hosts: localhost
+  connection: local
+  
+  tasks:
+    - name: Launch EC2 instance
+      ec2:
+       instance_type: t2.micro
+       image: ami-0747bdcabd34c712a
+       region: us-east-1
+       key_name: devops
+       vpc_subnet_id: subnet-aca3d48d
+       assign_public_ip: yes
+       wait: yes
+       count: 1
+       group: eshop
+       aws_access_key: "ASIAYKFY54BAQV4OX7X3"
+       aws_secret_key: "fJLsoegXisCPFAYrRXcXQjnx2izuKpeFEmFJbdBe"
+       security_token: "IQoJb3JpZ2luX2VjEJH//////////wEaCXVzLXdlc3QtMiJIMEYCIQDacmooQv/LZwDvduApFGTm3Mxj63LASXd5klEnln8IVQIhAOg8x9b2Y3Bpq7WNNHnTQAILq4ThDAJwGSOg7Q1TB7oIKq0CCBoQABoMNTcxNjE4NDg0Mjg5Igz5CmhXPy/tiTevm00qigJlYEPhNHzco/vA6P5Eh7W50OTyP2kVN5CTM+LaJoj8HWdAnvZE6+Blws9mX4h14rCPNm0is3FejreHZ0iVR9HDkl+GsDZIzTYoBKx7GavNjs2lAjpHeS1KFPI7mkgzo3e/o2UuRKTR59kIrG3gdKpBaWf2WkQ1oPHV/uqN89Sgrp7WK80HF8asG4bdgO55Lr2GVOKVJaBGLlKVUPuB64OOKfct3hxD/GRwyFT6xYJ9/fPidV/pmDm9NPWxJn4TQxZHR3+Eo56jY0sm3H1lLfcLTPNpQkmN6Ue2JQKKupVGj4qYoLBA8oseMib8kgSp/ERKZFamUhIrMUVRWp7lpEgzXP1gGT+nuytBhTDzpcuEBjqcAcK6EC4Ji6csGIALl7vR+sQ15uCmEei0F3f4sNrrWqDw18WNq5GzNz7te+J0fSWgQrWgaPumyQOmY6i8Zwp/FuR7HZyVYS2pF5gj2/pnmk9je4ZH0yysdWtv1CStARfzXR6Or/rnxx7fDgFVbJXL5Drz0HgRymJicm95HuHQPluUD8GJFtli38gL0IgxeG2TzTLxzsyGzzV2SHJUwg=="
+      register: ec2
+
+    - name: Add instance host to group
+      add_host: hostname={{ item.public_dns_name }} groupname=launched
+      with_items: '{{ec2.instances}}'
+
+    - name: Wait for SSH connection
+      wait_for: host={{ item.public_dns_name }} port=22 delay=30 timeout=300 state=started
+      with_items: '{{ec2.instances}}'
+
+- name: Configure EC2
+  hosts: launched
+  connection: ssh
+
+  tasks:
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      become: yes
+    - service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+    - name: Get project files from git
+      git:
+        repo: 'https://github.com/pirm01/semestralka.git'
+        dest: ./app
+    - name: Build docker with eshop
+      shell: cd app && docker build -t myeshop:latest .
+      become: yes
+    - name: Run Docker with eshop
+      shell: docker run -p 80:3000 myeshop
+      async: 45
+      poll: 10
+      become: yes
+    - wait_for:
+        port: 80

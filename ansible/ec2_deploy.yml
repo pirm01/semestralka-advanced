@@ -73,7 +73,7 @@
       become: yes
     - name: Get project files from git
       git:
-        repo: 'https://github.com/pirm01/semestralka.git'
+        repo: 'https://github.com/pirm01/semestralka-advanced.git'
         dest: ./app
     - name: Build Docker with eshop
       shell: cd app && docker build -t myeshop:latest .
